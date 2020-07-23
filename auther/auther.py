@@ -151,11 +151,14 @@ class Auther(object):
 
         return self.db.select(sql)
 
-    def get_roles(self):
+    def get_roles(self, title: str = None) -> list:
         sql = '''
             select id, title, insert_date
             from roles
             where delete_date is null
         '''
+
+        if title:
+            sql += f" and title = '{title}'"
 
         return self.db.select(sql)
