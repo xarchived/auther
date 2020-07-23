@@ -64,7 +64,7 @@ class Auther(object):
         try:
             self.add_user(username, password)
         except DuplicateRecord:
-            DuplicateUsername(f'Username already existed (username={username})')
+            raise DuplicateUsername(f'Username already existed (username={username})')
 
     def login(self, username: str, password: str) -> tuple:
         users = self.get_users(username=username)
