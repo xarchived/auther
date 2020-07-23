@@ -20,7 +20,7 @@ def _input_validation(func):
         for kw, arg in zip(names, args):
             kwargs[kw] = arg
 
-        if 'username' in kwargs:
+        if 'username' in kwargs and kwargs['username']:
             if not re.match(self.username_pattern, kwargs['username']):
                 raise InvalidInput('Invalid username')
 
@@ -35,7 +35,7 @@ def _input_validation(func):
 
             kwargs['title'] = kwargs['title'].lower()
 
-        if 'user_id' in kwargs:
+        if 'user_id' in kwargs and kwargs['user_id']:
             kwargs['user_id'] = int(kwargs['user_id'])
 
         if 'role_id' in kwargs:
