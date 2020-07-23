@@ -94,28 +94,29 @@ class Auther(object):
 
     @_input_validation
     def del_user(self, user_id: int = None, username: str = None) -> None:
-        sql = '''
-            update users
-            set delete_date = now()
-            where id = %s
-               or username = %s
-        '''
+        if username:
+            user = self.get_users(username=username)
+            user = next(user, dict())
+            if not user:
+                raise NothingDeleted(f'Record not found (username = {username})')
 
-        self.db.perform(sql, user_id, username)
+            user_id = user['id']
+
+        self.db.delete('users', pk=user_id)
 
     @_input_validation
     def del_role(self, role_id: int = None, title: str = None) -> None:
-        sql = '''
-            update roles
-            set delete_date = now()
-            where id = %s
-               or title = %s
-        '''
+        if title:
+            role = self.get_roles(title=title)
+            role = next(role, dict())
+            if not role:
+                raise NothingDeleted(f'Record not found (title = {title})')
+            role_id = role['id']
 
-        self.db.perform(sql, role_id, title)
+        self.db.delete('roles', pk=role_id)
 
     @_input_validation
-    def del_user_role(self, user_id: int = None, role_id: int = None) -> None:
+    def del_user_role(self, user_id: int, role_id: int) -> None:
         sql = '''
             delete from user_roles
             where user_id = %s
