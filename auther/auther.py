@@ -39,7 +39,7 @@ def _input_validation(func):
             kwargs['user_id'] = int(kwargs['user_id'])
 
         if 'role_id' in kwargs:
-            kwargs['user_id'] = int(kwargs['user_id'])
+            kwargs['role_id'] = int(kwargs['role_id'])
 
         return func(**kwargs)
 
@@ -104,7 +104,7 @@ class Auther(object):
         self.db.perform(sql, user_id, username)
 
     @_input_validation
-    def del_role(self, user_id: int = None, title: str = None) -> None:
+    def del_role(self, role_id: int = None, title: str = None) -> None:
         sql = '''
             update roles
             set delete_date = now()
@@ -112,7 +112,7 @@ class Auther(object):
                or title = %s
         '''
 
-        self.db.perform(sql, user_id, title)
+        self.db.perform(sql, role_id, title)
 
     @_input_validation
     def del_user_role(self, user_id: int = None, role_id: int = None) -> None:
