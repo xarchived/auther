@@ -74,7 +74,8 @@ class Auther(object):
             raise UsernameNotFound(f'Username not found (username={username})')
 
         if bcrypt.checkpw(password.encode('utf-8'), bytes(user['password'])):
-            user['roles'].remove(None)
+            if None in user['roles']:
+                user['roles'].remove(None)
             return user['id'], user['roles']
 
         raise WrongPassword(f'Wrong password')
