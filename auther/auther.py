@@ -27,6 +27,9 @@ def _input_validation(func):
             kwargs['username'] = kwargs['username'].lower()
 
         if 'password' in kwargs:
+            if not re.match(self.password_pattern, kwargs['password']):
+                raise InvalidInput('Invalid password')
+
             kwargs['password'] = hash_password(kwargs['password'])
 
         if 'title' in kwargs:
@@ -48,10 +51,12 @@ def _input_validation(func):
 
 class Auther(object):
     username_pattern: str
+    password_pattern: str
     db: Qucom
 
     def __init__(self, user: str, password: str, database: str, host: str = 'localhost', port=5432):
         self.username_pattern = r'^([a-zA-Z0-9_]{3,32})$'
+        self.password_pattern = r'.{5,66}'
         self.db = Qucom(host=host, port=port, user=user, password=password, database=database)
 
     def init_db(self) -> None:
