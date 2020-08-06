@@ -1,5 +1,6 @@
 import re
 from importlib.resources import open_text
+from typing import Iterator
 
 import bcrypt
 from qucom import Qucom
@@ -135,7 +136,8 @@ class Auther(object):
         self.db.edit('users', pk=user_id, username=username, password=password)
 
     @_input_validation
-    def get_users(self, user_id: int = None, username: str = None, password: str = None, role: str = None) -> list:
+    def get_users(self, user_id: int = None, username: str = None, password: str = None,
+                  role: str = None) -> Iterator[dict]:
         sql = '''
             select id,
                    username,
@@ -157,7 +159,7 @@ class Auther(object):
 
         return self.db.select(sql)
 
-    def get_roles(self, title: str = None) -> list:
+    def get_roles(self, title: str = None) -> Iterator[dict]:
         sql = '''
             select id, title, insert_date
             from roles
