@@ -108,7 +108,12 @@ class Auther(object):
 
             user_id = user['id']
 
-        self.db.delete('users', pk=user_id)
+        sql = '''
+            delete from users
+            where id = %s
+        '''
+
+        self.db.perform(sql, user_id)
 
     @_input_validation
     def del_role(self, role_id: int = None, title: str = None) -> None:
