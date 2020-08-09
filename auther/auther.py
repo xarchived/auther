@@ -21,14 +21,14 @@ def _input_validation(func):
         for kw, arg in zip(names, args):
             kwargs[kw] = arg
 
-        if 'username' in kwargs:
-            if not kwargs['username'] or not re.match(self.username_pattern, kwargs['username']):
+        if 'username' in kwargs and kwargs['username'] is not None:
+            if not re.match(self.username_pattern, kwargs['username']):
                 raise InvalidInput('Invalid username')
 
             kwargs['username'] = kwargs['username'].lower()
 
-        if 'password' in kwargs:
-            if not kwargs['password'] or not re.match(self.password_pattern, kwargs['password']):
+        if 'password' in kwargs and kwargs['password'] is not None:
+            if not re.match(self.password_pattern, kwargs['password']):
                 raise InvalidInput('Invalid password')
 
             kwargs['password'] = hash_password(kwargs['password'])
